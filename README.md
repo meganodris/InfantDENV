@@ -6,7 +6,7 @@ Code and data associated with the analysis in "Maternally-derived antibody titer
 
 
 ### **Modelling titer-related mechanisms of infant disease risk**
-
+```FitTiterRiskMechanisms.R``` calls data and models for fitting titer-related mechanisms of infant disease risk to age-specific hospitalised infant dengue case data.  
 
 ### **Simulating long-term trends in age-specific infant disease risk**
-- ```SimulateTemporalRisks.R``` calls the data and functions to simulate age-specific infant dengue disease risk trends over a 40 year period, for both the ADE (lognormal functional form) and non-ADE threshold scenarios. 
+```SimulateTemporalRisks.R``` calls the data and functions to simulate age-specific infant dengue disease risk trends over a 40 year period, for both the ADE (lognormal functional form) and non-ADE threshold scenarios. 
