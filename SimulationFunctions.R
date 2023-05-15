@@ -3,7 +3,7 @@
 
 
 #--- Simulate from ADE model (lognormal)
-simTrendsADE <- function(Yrs, YrsH, YrInd, FOI, FOIH, FTA, nAgeG, ageL, ageU, tt, HL, logmu, logsd){
+simTrendsADE <- function(Yrs, YrsH, FOI, FOIH, FTA, nAgeG, tt, HL, logmu, logsd){
   
   # lists to store simulations
   titers <- list()
@@ -79,7 +79,7 @@ simTrendsADE <- function(Yrs, YrsH, YrInd, FOI, FOIH, FTA, nAgeG, ageL, ageU, tt
 
 
 #--- Simulate from threshold (non-ADE) model 
-simTrendsT <- function(Yrs, YrsH, YrInd, FOI, FOIH, FTA, nAgeG, ageL, ageU, tt, HL, mu, sd, alpha){
+simTrendsT <- function(Yrs, YrsH, FOI, FOIH, FTA, nAgeG, tt, HL, mu, sd, delta){
   
   # lists to store simulations
   titers <- list()
@@ -144,7 +144,7 @@ simTrendsT <- function(Yrs, YrsH, YrInd, FOI, FOIH, FTA, nAgeG, ageL, ageU, tt, 
     }
     
     # multiply titer-risk density by infant risk of infection
-    ageR <- exp(-alpha*tt)
+    ageR <- exp(-delta*tt)
     for(t in 2:nrow(Irisk)) IriskFOI[t,1:n] <- Irisk[t,1:n]*ageR[t]*(exp(-4*FOI[y]*tt[t-1]/12))*(4*FOI[y]/12)
     Risk[[y]] <- Irisk
     RiskDI[[y]] <- IriskFOI
