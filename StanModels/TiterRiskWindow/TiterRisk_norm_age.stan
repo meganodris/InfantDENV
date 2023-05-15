@@ -1,4 +1,4 @@
-//----- Model of threshold (non-ADE) titer-risk scenario -----//
+//----- Model of normal ADE titer-risk scenario -----//
 // with age-specific disease frailty effect
 
 data {
@@ -19,7 +19,7 @@ data {
 
 parameters {
   
-  real mu[3]; 
+  real <lower=0> mu[3]; 
   real <lower=0> sigma[3];  
   real <lower=0> rhoP;
 }
@@ -38,13 +38,13 @@ transformed parameters{
   real B = rhoP*1e5;
 
   // probability density of titers being within risk window 
-  for(i in 1:N[1]) for(t in 1:Nt) pHI[i,t] = 1-exp(normal_lcdf(estHI[i,t] | mu[1], sigma[1]));;
-  for(i in 1:N[2]) for(t in 1:Nt) pHI2[i,t] = 1-exp(normal_lcdf(estHI2[i,t] | mu[2], sigma[2]));;
-  for(i in 1:N[3]) for(t in 1:Nt) pNT[i,t] = 1-exp(normal_lcdf(estNT[i,t] | mu[3], sigma[3]));;
+  for(i in 1:N[1]) for(t in 1:Nt) pHI[i,t] = exp(normal_lpdf(estHI[i,t] | mu[1], sigma[1]))/exp(normal_lpdf(mu[1] | mu[1], sigma[1]));
+  for(i in 1:N[2]) for(t in 1:Nt) pHI2[i,t] = exp(normal_lpdf(estHI2[i,t] | mu[2], sigma[2]))/exp(normal_lpdf(mu[2] | mu[2], sigma[2]));
+  for(i in 1:N[3]) for(t in 1:Nt) pNT[i,t] = exp(normal_lpdf(estNT[i,t] | mu[3], sigma[3]))/exp(normal_lpdf(mu[3] | mu[3], sigma[3]));
 
   // age frailty
   for(a in 1:Nt) ageR[a] = 1*exp(-delta*a);
-
+ 
   // conditional prob infection 
   probAge[,1] = pHI[,1]*ageR[1]*(1-exp(-lambda));
   probAge2[,1] = pHI2[,1]*ageR[1]*(1-exp(-lambda));
@@ -64,7 +64,7 @@ transformed parameters{
 model {
   
   // priors
-  mu ~ normal(50,10);
+  mu ~ normal(10,5);
   sigma ~ normal(0,1);
   rhoP ~ normal(0.4,0.5);
 
@@ -81,7 +81,7 @@ generated quantities {
 
   for(i in 1:3) for(t in 1:Nt) log_lik[i,t] = poisson_lpmf(cases[t] | probI[i,t]*B+0.001);
   for(i in 1:3) predCases[i,] = poisson_rng(probI[i,]*B+0.001);
-  for(i in 1:3) for(t in 1:Ntfit) predRisk[i,t] = 1-exp(normal_lcdf(tfit[t] | mu[i], sigma[i]));
+  for(i in 1:3) for(t in 1:Ntfit) predRisk[i,t] = exp(normal_lpdf(tfit[t]| mu[i], sigma[i]))/exp(normal_lpdf(mu[i] | mu[i], sigma[i]));
 
 
 }
