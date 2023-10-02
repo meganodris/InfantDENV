@@ -1,6 +1,6 @@
 # InfantDENV
 
-Code and data associated with the analysis in "Maternally-derived antibody titer dynamics and risk of hospitalised infant dengue disease", https://doi.org/10.1101/2022.11.18.22282500
+Code and data associated with the analysis in "Maternally-derived antibody titer dynamics and risk of hospitalised infant dengue disease". https://doi.org/10.1073/pnas.2308221120 
 
 ### **Models of maternal antibody decay dynamics** 
 ```FitAbDecayModels.R``` calls the data and Stan models to reconstruct the decay dynamics of maternally-derived DENV antibodies.
